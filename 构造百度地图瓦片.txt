@@ -1,0 +1,5 @@
+http://online1.map.bdimg.com/tile/?qt=tile&x=1652&y=858&z=13&styles=pl&udt=20150213&scaler=1
+
+z:first level folder name;
+x:second level folder name;
+y:png file name. 

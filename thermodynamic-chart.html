@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>百度离线版DEMO</title>
+<script type="text/javascript" src="js/apiv1.3.min.js"></script>
+<script type="text/javascript" src="js/Heatmap_min.js"></script>
+<!--script type="text/javascript" src="http://api.map.baidu.com/api?v=1.3"></script-->
+<link rel="stylesheet" type="text/css" href="bmap.css"/>
+</head>
+<body>
+<div style="height:640px;border:1px solid gray" id="container"></div>
+</body>
+</html>
+<script type="text/javascript">
+// set tile path
+/*
+var tileLayer = new BMap.TileLayer();
+tileLayer.getTilesUrl = function(tileCoord, zoom) {
+    var x = tileCoord.x;
+    var y = tileCoord.y;
+    var url = '../maptile/' + zoom + '/' + x + '/' + y + format;
+    return url;
+}
+*/
+
+var map = new BMap.Map("container",{mapType: BMAP_NORMAL_MAP,minZoom:7,maxZoom:14});      //设置卫星图为底图
+var point =  new BMap.Point(126.630000, 45.7095);
+// 初始化地图,设置中心点坐标和地图级别。
+map.centerAndZoom(point,7);                     
+//添加地图类型切换控件
+//map.addControl(new BMap.MapTypeControl());
+//添加导航控件
+map.addControl(new BMap.NavigationControl());
+//添加概览图窗口控件
+map.addControl(new BMap.OverviewMapControl({isOpen:true}));
+map.addControl(new BMap.ScaleControl({anchor: BMAP_ANCHOR_BOTTOM_LEFT}));
+// 启用滚轮放大缩小。
+map.enableScrollWheelZoom();                  
+// 启用键盘操作。
+map.enableKeyboard();                           
+//map.setCurrentCity("大庆市");       
+//设置热力图的点。   
+var points =[
+    {"lng":126.418261,"lat":45.921984,"count":50},
+    {"lng":126.423332,"lat":45.916532,"count":51},
+    {"lng":126.419787,"lat":45.930658,"count":15},
+    {"lng":126.418455,"lat":45.920921,"count":40},
+    {"lng":126.418843,"lat":45.915516,"count":100},
+    {"lng":126.42546,"lat":45.918503,"count":6},
+    {"lng":126.423289,"lat":45.919989,"count":18},
+    {"lng":126.418162,"lat":45.915051,"count":80},
+    {"lng":126.422039,"lat":45.91782,"count":11},
+    {"lng":126.41387,"lat":45.917253,"count":7},
+    {"lng":126.41773,"lat":45.919426,"count":42},
+    {"lng":126.421107,"lat":45.916445,"count":4},
+    {"lng":126.417521,"lat":45.917943,"count":27},
+    {"lng":126.419812,"lat":45.920836,"count":23},
+    {"lng":126.420682,"lat":45.91463,"count":60},
+    {"lng":126.415424,"lat":45.924675,"count":8},
+    {"lng":126.419242,"lat":45.914509,"count":15},
+    {"lng":126.422766,"lat":45.921408,"count":25},
+    {"lng":126.421674,"lat":45.924396,"count":21},
+    {"lng":126.427268,"lat":45.92267,"count":1},
+    {"lng":126.417721,"lat":45.920034,"count":51},
+    {"lng":126.412456,"lat":45.92667,"count":7},
+    {"lng":126.420432,"lat":45.919114,"count":11},
+    {"lng":126.425013,"lat":45.921611,"count":35},
+    {"lng":126.418733,"lat":45.931037,"count":22},
+    {"lng":126.419336,"lat":45.931134,"count":4},
+    {"lng":126.413557,"lat":45.923254,"count":5},
+    {"lng":126.418367,"lat":45.92943,"count":3},
+    {"lng":126.424312,"lat":45.919621,"count":100},
+    {"lng":126.423874,"lat":45.919447,"count":87},
+    {"lng":126.424225,"lat":45.923091,"count":32},
+    {"lng":126.417801,"lat":45.921854,"count":44},
+    {"lng":126.417129,"lat":45.928227,"count":21},
+    {"lng":126.426426,"lat":45.922286,"count":80},
+    {"lng":126.421597,"lat":45.91948,"count":32},
+    {"lng":126.423895,"lat":45.920787,"count":26},
+    {"lng":126.423563,"lat":45.921197,"count":17},
+    {"lng":126.417982,"lat":45.922547,"count":17},
+    {"lng":126.426126,"lat":45.921938,"count":25},
+    {"lng":126.42326,"lat":45.915782,"count":100},
+    {"lng":126.419239,"lat":45.916759,"count":39},
+    {"lng":126.417185,"lat":45.929123,"count":11},
+    {"lng":126.417237,"lat":45.927518,"count":9},
+    {"lng":126.417784,"lat":45.915754,"count":47},
+    {"lng":126.420193,"lat":45.917061,"count":52},
+    {"lng":126.422735,"lat":45.915619,"count":100},
+    {"lng":126.418495,"lat":45.915958,"count":46},
+    {"lng":126.416292,"lat":45.931166,"count":9},
+    {"lng":126.419916,"lat":45.924055,"count":8},
+    {"lng":126.42189,"lat":45.921308,"count":11},
+    {"lng":126.413765,"lat":45.929376,"count":3},
+    {"lng":126.418232,"lat":45.920348,"count":50},
+    {"lng":126.417554,"lat":45.930511,"count":15},
+    {"lng":126.418568,"lat":45.918161,"count":23},
+    {"lng":126.413461,"lat":45.926306,"count":3},
+    {"lng":126.42232,"lat":45.92161,"count":13},
+    {"lng":126.4174,"lat":45.928616,"count":6},
+    {"lng":126.424679,"lat":45.915499,"count":21},
+    {"lng":126.42171,"lat":45.915738,"count":29},
+    {"lng":126.417836,"lat":45.916998,"count":99},
+    {"lng":126.420755,"lat":45.928001,"count":10},
+    {"lng":126.414077,"lat":45.930655,"count":14},
+    {"lng":126.426092,"lat":45.922995,"count":16},
+    {"lng":126.41535,"lat":45.931054,"count":15},
+    {"lng":126.413022,"lat":45.921895,"count":13},
+    {"lng":126.415551,"lat":45.913373,"count":17},
+    {"lng":126.421191,"lat":45.926572,"count":1},
+    {"lng":126.419612,"lat":45.917119,"count":9},
+    {"lng":126.418237,"lat":45.921337,"count":54},
+    {"lng":126.423776,"lat":45.921919,"count":26},
+    {"lng":126.417694,"lat":45.92536,"count":17},
+    {"lng":126.415377,"lat":45.914137,"count":19},
+    {"lng":126.417434,"lat":45.914394,"count":43},
+    {"lng":126.42588,"lat":45.922622,"count":27},
+    {"lng":126.418345,"lat":45.919467,"count":8},
+    {"lng":126.426883,"lat":45.917171,"count":3},
+    {"lng":126.423877,"lat":45.916659,"count":34},
+    {"lng":126.415712,"lat":45.915613,"count":14},
+    {"lng":126.419869,"lat":45.931416,"count":12},
+    {"lng":126.416956,"lat":45.925377,"count":11},
+    {"lng":126.42066,"lat":45.925017,"count":38},
+    {"lng":126.416244,"lat":45.920215,"count":91},
+    {"lng":126.41929,"lat":45.915908,"count":54},
+    {"lng":126.422116,"lat":45.919658,"count":21},
+    {"lng":126.4183,"lat":45.925015,"count":15},
+    {"lng":126.421969,"lat":45.913527,"count":3},
+    {"lng":126.422936,"lat":45.921854,"count":24},
+    {"lng":126.41905,"lat":45.929217,"count":12},
+    {"lng":126.424579,"lat":45.914987,"count":57},
+    {"lng":126.42076,"lat":45.915251,"count":70},
+    {"lng":126.425867,"lat":45.918989,"count":8}];
+	
+	heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+	map.addOverlay(heatmapOverlay);
+	heatmapOverlay.setDataSet({data:points,max:100});
+	
+	heatmapOverlay.show();
+
+</script>
